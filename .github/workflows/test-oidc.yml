@@ -1,0 +1,36 @@
+name: Test OIDC Simple
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test-oidc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.ROLE_ARN }}
+          aws-region: us-east-1
+      
+      - name: Test AWS access
+        run: |
+          aws sts get-caller-identity
+          echo "OIDC role assumption successful!"
+      
+      - uses: actions/checkout@v4
+      
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      
+      - name: Run integration tests
+        run: |
+          cd integration-tests
+          cargo test -- --test-threads=1 --ignored
