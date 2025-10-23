@@ -11,3 +11,7 @@ This is a test file to verify the GitHub Actions labeling gate works correctly.
 ## Security Verification
 
 This ensures no unauthorized code can execute with AWS credentials without explicit human approval.
+
+## Test Revision
+
+This revision tests that the workflow properly handles PR updates and maintains security controls.
